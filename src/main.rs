@@ -34,7 +34,7 @@ fn build_output(input: &Input, git: Option<GitInfo>) -> String {
             parts.push(format!("?{}", git.untracked).cyan());
         }
         if git.modified > 0 {
-            parts.push(format!("!{}", git.modified).yellow());
+            parts.push(format!("*{}", git.modified).yellow());
         }
         if git.staged > 0 {
             parts.push(format!("+{}", git.staged).green());
@@ -43,7 +43,7 @@ fn build_output(input: &Input, git: Option<GitInfo>) -> String {
             parts.push(format!(">{}", git.renamed).magenta());
         }
         if git.deleted > 0 {
-            parts.push(format!("x{}", git.deleted).red());
+            parts.push(format!("!{}", git.deleted).red());
         }
         if !parts.is_empty() {
             line.push_str("\n[Git Status] ");
@@ -58,6 +58,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let input = Input::from_stdin()?;
     let git = GitInfo::from_dir(&input.workspace.current_dir);
     let output = build_output(&input, git);
-    println!("{output}");
+    print!("{output}");
     Ok(())
 }
