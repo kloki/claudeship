@@ -36,7 +36,7 @@ impl GitInfo {
             if s.is_wt_new() {
                 info.untracked += 1;
             }
-            if s.is_wt_modified() || s.is_index_modified() {
+            if s.is_wt_modified() {
                 info.modified += 1;
             }
             if s.is_index_new() || s.is_index_modified() || s.is_index_typechange() {

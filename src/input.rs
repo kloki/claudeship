@@ -1,7 +1,3 @@
-#![allow(dead_code)]
-
-use std::io::Read;
-
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -76,8 +72,6 @@ pub struct Input {
 
 impl Input {
     pub fn from_stdin() -> Result<Self, Box<dyn std::error::Error>> {
-        let mut raw = String::new();
-        std::io::stdin().read_to_string(&mut raw)?;
-        Ok(serde_json::from_str(&raw)?)
+        Ok(serde_json::from_reader(std::io::stdin().lock())?)
     }
 }
