@@ -22,14 +22,3 @@ Add to `~/.claude/settings.json`:
   }
 }
 ```
-
-## Output
-
-```
-[Opus] /home/user/project [main] $0.42 ████████░░░░░░░░░░░░
-?3 !2 +1
-```
-
-Line 1: model, directory, git branch, cost, context window usage (red at >=80%)
-
-Line 2 (git status, non-zero only): `?` untracked, `!` modified, `+` staged, `>` renamed, `x` deleted

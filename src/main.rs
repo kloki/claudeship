@@ -2,7 +2,6 @@ mod git;
 mod input;
 
 use colorize::AnsiColor;
-
 use git::GitInfo;
 use input::Input;
 
@@ -13,17 +12,13 @@ fn build_output(input: &Input, git: Option<GitInfo>) -> String {
     let empty = bar_width - filled;
     let bar = format!("{}{}", "█".repeat(filled), "░".repeat(empty));
 
-    let colored_bar = if used >= 80.0 {
-        bar.red()
-    } else {
-        bar.grey()
-    };
+    let colored_bar = if used >= 80.0 { bar.red() } else { bar.grey() };
 
     let model_display = format!("[{}]", input.model.display_name).cyan();
     let dir_display = input.workspace.current_dir.clone().magenta();
     let cost_display = format!("${:.2}", input.cost.total_cost_usd).yellow();
 
-    let mut line1 = match git.as_ref().and_then(|g| g.branch.as_ref()) {
+    let mut line = match git.as_ref().and_then(|g| g.branch.as_ref()) {
         Some(branch) => {
             let branch_display = format!("[{}]", branch).green();
             format!("{model_display} {dir_display} {branch_display} {cost_display} {colored_bar}")
@@ -51,12 +46,12 @@ fn build_output(input: &Input, git: Option<GitInfo>) -> String {
             parts.push(format!("x{}", git.deleted).red());
         }
         if !parts.is_empty() {
-            line1.push('\n');
-            line1.push_str(&parts.join(" "));
+            line.push_str("\n[Git Status] ");
+            line.push_str(&parts.join(" "));
         }
     }
 
-    line1
+    line
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
