@@ -15,7 +15,11 @@ fn build_output(input: &Input, git: Option<GitInfo>) -> String {
     let colored_bar = if used >= 80.0 { bar.red() } else { bar.grey() };
 
     let model_display = format!("[{}]", input.model.display_name).cyan();
-    let dir_display = input.workspace.current_dir.clone().magenta();
+    let dir = match std::env::var("HOME") {
+        Ok(home) => input.workspace.current_dir.replacen(&home, "~", 1),
+        Err(_) => input.workspace.current_dir.clone(),
+    };
+    let dir_display = dir.magenta();
     let cost_display = format!("${:.2}", input.cost.total_cost_usd).yellow();
 
     let mut line = match git.as_ref().and_then(|g| g.branch.as_ref()) {

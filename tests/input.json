@@ -6,7 +6,7 @@
   "exceeds_200k_tokens": false,
   "model": {
     "id": "claude-opus-4-6",
-    "display_name": "Opus"
+    "display_name": "Opus 4.6"
   },
   "workspace": {
     "current_dir": "/home/koen/repos/claudeship",
@@ -16,7 +16,7 @@
     "name": "default"
   },
   "cost": {
-    "total_cost_usd": 0.01234,
+    "total_cost_usd": 4.31234,
     "total_duration_ms": 45000,
     "total_api_duration_ms": 2300,
     "total_lines_added": 156,

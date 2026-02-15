@@ -4,6 +4,8 @@ A custom statusline for [Claude Code](https://claude.ai/code).
 
 Displays model name, working directory, git branch, session cost, context window usage bar, and git status.
 
+![example](example.png)
+
 ## Install
 
 ```sh
