@@ -12,7 +12,13 @@ fn build_output(input: &Input, git: Option<GitInfo>) -> String {
     let empty = bar_width - filled;
     let bar = format!("{}{}", "█".repeat(filled), "░".repeat(empty));
 
-    let colored_bar = if used >= 80.0 { bar.red() } else { bar.grey() };
+    let colored_bar = if used >= 80.0 {
+        bar.red()
+    } else if used >= 40.0 {
+        bar.yellow()
+    } else {
+        bar.grey()
+    };
 
     let model_display = format!("[{}]", input.model.display_name).cyan();
     let dir = match std::env::var("HOME") {

@@ -6,13 +6,17 @@ Displays model name, working directory, git branch, session cost, context window
 
 ![example](example.png)
 
-## Install
+# Install
+
+# Binaries
+
+Check [Releases](https://github.com/kloki/claudeship/releases) for binaries and installers
 
 ```sh
 cargo install claudeship
 ```
 
-## Configure
+# Configure
 
 Add to `~/.claude/settings.json`:
 
