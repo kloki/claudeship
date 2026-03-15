@@ -10,7 +10,13 @@ fn build_output(input: &Input, git: Option<GitInfo>) -> String {
     let used = input.context_window.used_percentage.unwrap_or(0.0);
     let bar = braille_bar(used);
 
-    let colored_bar = if used >= 80.0 { bar.red() } else { bar.grey() };
+    let colored_bar = if used >= 80.0 {
+        bar.red()
+    } else if used >= 40.0 {
+        bar.yellow()
+    } else {
+        bar.grey()
+    };
 
     let model_display = format!("[{}]", input.model.display_name).cyan();
     let dir = match std::env::var("HOME") {
