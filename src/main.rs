@@ -1,16 +1,14 @@
 mod git;
 mod input;
 
+use braille_bar::braille_bar;
 use colorize::AnsiColor;
 use git::GitInfo;
 use input::Input;
 
 fn build_output(input: &Input, git: Option<GitInfo>) -> String {
-    let bar_width = 20;
     let used = input.context_window.used_percentage.unwrap_or(0.0);
-    let filled = ((used / 100.0) * bar_width as f64) as usize;
-    let empty = bar_width - filled;
-    let bar = format!("{}{}", "█".repeat(filled), "░".repeat(empty));
+    let bar = braille_bar(used);
 
     let colored_bar = if used >= 80.0 { bar.red() } else { bar.grey() };
 
