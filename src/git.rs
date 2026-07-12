@@ -2,6 +2,7 @@ use git2::{Repository, StatusOptions};
 
 pub struct GitInfo {
     pub branch: Option<String>,
+    pub is_worktree: bool,
     pub untracked: usize,
     pub modified: usize,
     pub staged: usize,
@@ -12,6 +13,8 @@ pub struct GitInfo {
 impl GitInfo {
     pub fn from_dir(path: &str) -> Option<Self> {
         let repo = Repository::open(path).ok()?;
+
+        let is_worktree = repo.is_worktree();
 
         let branch = repo
             .head()
@@ -24,6 +27,7 @@ impl GitInfo {
 
         let mut info = Self {
             branch,
+            is_worktree,
             untracked: 0,
             modified: 0,
             staged: 0,

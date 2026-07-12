@@ -11,6 +11,8 @@ pub struct Model {
 pub struct Workspace {
     pub current_dir: String,
     pub project_dir: String,
+    #[serde(default)]
+    pub added_dirs: Vec<String>,
 }
 
 #[derive(Deserialize)]
@@ -56,6 +58,11 @@ pub struct Agent {
 }
 
 #[derive(Deserialize)]
+pub struct Effort {
+    pub level: String,
+}
+
+#[derive(Deserialize)]
 pub struct Input {
     pub cwd: String,
     pub session_id: String,
@@ -69,6 +76,7 @@ pub struct Input {
     pub context_window: ContextWindow,
     pub vim: Option<Vim>,
     pub agent: Option<Agent>,
+    pub effort: Option<Effort>,
 }
 
 impl Input {
