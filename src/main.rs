@@ -6,6 +6,22 @@ use colorize::AnsiColor;
 use git::GitInfo;
 use input::Input;
 
+fn format_age(ms: u64) -> String {
+    let secs = ms / 1000;
+    let mins = secs / 60;
+    let hours = mins / 60;
+    let days = hours / 24;
+    if days > 0 {
+        format!("{}d{}h", days, hours % 24)
+    } else if hours > 0 {
+        format!("{}h{}m", hours, mins % 60)
+    } else if mins > 0 {
+        format!("{}m", mins)
+    } else {
+        format!("{}s", secs)
+    }
+}
+
 fn build_output(input: &Input, git: Option<GitInfo>) -> String {
     let used = input.context_window.used_percentage.unwrap_or(0.0);
     let bar = braille_bar(used);
@@ -43,6 +59,7 @@ fn build_output(input: &Input, git: Option<GitInfo>) -> String {
     };
     let dir_display = shorten(&input.workspace.current_dir).magenta();
     let cost_display = format!("${:.2}", input.cost.total_cost_usd).yellow();
+    let age_display = format_age(input.cost.total_duration_ms).grey();
 
     let worktree_display = if git.as_ref().is_some_and(|g| g.is_worktree) {
         " \u{f1bb}".blue()
@@ -54,11 +71,11 @@ fn build_output(input: &Input, git: Option<GitInfo>) -> String {
         Some(branch) => {
             let branch_display = format!("[{}]", branch).green();
             format!(
-                "{model_display} {dir_display} {branch_display}{worktree_display} {cost_display} {colored_bar}"
+                "{model_display} {dir_display} {branch_display}{worktree_display} {cost_display} {age_display} {colored_bar}"
             )
         }
         None => {
-            format!("{model_display} {dir_display} {cost_display} {colored_bar}")
+            format!("{model_display} {dir_display} {cost_display} {age_display} {colored_bar}")
         }
     };
 
@@ -91,6 +108,21 @@ fn build_output(input: &Input, git: Option<GitInfo>) -> String {
     }
 
     line
+}
+
+#[cfg(test)]
+mod tests {
+    use super::format_age;
+
+    #[test]
+    fn formats_age() {
+        assert_eq!(format_age(0), "0s");
+        assert_eq!(format_age(45_000), "45s");
+        assert_eq!(format_age(60_000), "1m");
+        assert_eq!(format_age(12 * 60_000), "12m");
+        assert_eq!(format_age(65 * 60_000), "1h5m");
+        assert_eq!(format_age(26 * 3_600_000), "1d2h");
+    }
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
