@@ -1,10 +1,10 @@
 [package]
 name = "claudeship"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2024"
 description = "A custom statusline for Claude Code"
 license = "MIT"
-repository = "https://github.com/koenpunt/claudeship"
+repository = "https://github.com/kloki/claudeship"
 readme = "README.md"
 keywords = ["claude", "statusline", "cli"]
 categories = ["command-line-utilities"]
